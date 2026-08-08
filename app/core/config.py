@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     # In Coolify, override with your real frontend domain via the CORS_ORIGINS env var.
     cors_origins: list[str] = [
         "http://localhost:4200",
-        "http://localhost:8000",
+        "http://localhost:8080",
     ]
 
     # Async SQLAlchemy URL for the MySQL user database.

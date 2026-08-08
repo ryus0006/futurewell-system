@@ -7,7 +7,7 @@ services:
     build: .
     container_name: onboarding-backend
     ports:
-      - "8000:8000"
+      - "8080:8080"
     environment:
       APP_NAME: onboarding-backend
       # Set these in the Coolify UI (backend resource -> Environment Variables):
@@ -15,7 +15,7 @@ services:
       CORS_ORIGINS: ${CORS_ORIGINS}
       GEMINI_API_KEY: ${GEMINI_API_KEY}
     healthcheck:
-      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')\""]
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8080/api/health')\""]
       interval: 10s
       timeout: 5s
       retries: 5
