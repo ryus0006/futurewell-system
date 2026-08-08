@@ -1,0 +1,36 @@
+# Local infrastructure for the backend project: a throwaway MySQL (+ Adminer).
+# The schema/seed is NOT baked in here: the real database is a standalone managed
+# resource seeded separately, so local seeding is a script step instead.
+#
+# Use the scripts, not this file directly:
+#   ./scripts/local-start.sh   # start DB, load schema+seed, run the app
+#   ./scripts/local-stop.sh    # stop and reset the DB
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: onboarding-mysql-local
+    environment:
+      MYSQL_DATABASE: appdb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_local_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-papppass"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  adminer:
+    image: adminer
+    container_name: onboarding-adminer-local
+    ports:
+      - "8082:8080"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_local_data:

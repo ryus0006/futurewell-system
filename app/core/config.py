@@ -19,5 +19,10 @@ class Settings(BaseSettings):
     # is injected from the managed MySQL resource via the DATABASE_URL env var.
     database_url: str = "mysql+aiomysql://appuser:apppass@localhost:3306/appdb"
 
+    # Gemini for guidance composition. Set GEMINI_API_KEY in the environment or
+    # a .env file. When empty, guidance returns a template instead of the model.
+    gemini_api_key: str = ""
+    gemini_model: str = "gemini-3.5-flash-lite"
+
 
 settings = Settings()

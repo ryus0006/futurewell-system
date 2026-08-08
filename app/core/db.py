@@ -9,8 +9,11 @@ from sqlalchemy.orm import DeclarativeBase
 
 from app.core.config import settings
 
-# pool_pre_ping recycles stale connections (managed DBs may drop idle ones).
-engine = create_async_engine(settings.database_url, pool_pre_ping=True)
+# pool_recycle drops connections older than the interval so a stale one is never
+# handed out (managed DBs close idle connections). We avoid pool_pre_ping here:
+# the aiomysql driver's ping() signature is incompatible with SQLAlchemy's
+# pre-ping call and raises on connection reuse.
+engine = create_async_engine(settings.database_url, pool_recycle=3600)
 
 SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 
