@@ -3,15 +3,14 @@ FROM python:3.12-slim
 WORKDIR /apps/backend/src
 
 # Python libraries
-RUN pip install --upgrade pip
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
 # Source code
 COPY . .
 
-# Network interface (default FastAPI/uvicorn port)
-EXPOSE 8000
+# Network interface (8080; 8000 is taken by Coolify on the host)
+EXPOSE 8080
 
 # Entry script
 RUN chmod +rx docker-cmd.sh
