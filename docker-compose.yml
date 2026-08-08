@@ -1,0 +1,21 @@
+# Deploy stack for the backend project (backend only).
+# MySQL is a SEPARATE managed resource in Coolify, NOT defined here. Coolify
+# injects DATABASE_URL, CORS_ORIGINS, and GEMINI_API_KEY as environment vars.
+# The frontend is a separate project (futurewell-ui) with its own deploy.
+services:
+  backend:
+    build: .
+    container_name: onboarding-backend
+    ports:
+      - "8000:8000"
+    environment:
+      APP_NAME: onboarding-backend
+      # Set these in the Coolify UI (backend resource -> Environment Variables):
+      DATABASE_URL: ${DATABASE_URL}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5

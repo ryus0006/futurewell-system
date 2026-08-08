@@ -6,6 +6,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import health
 from app.core.config import settings
 from app.core.db import engine
+from app.core.logging import RequestLoggingMiddleware, configure_logging
+from app.modules.awareness import routes as awareness_routes
+from app.modules.clinics import routes as clinics_routes
+from app.modules.guidance import routes as guidance_routes
+from app.modules.risk import routes as risk_routes
+
+configure_logging()
 
 
 @asynccontextmanager
@@ -25,8 +32,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# Added last so it is outermost and times the full request.
+app.add_middleware(RequestLoggingMiddleware)
 
 app.include_router(health.router)
+app.include_router(awareness_routes.router)
+app.include_router(clinics_routes.router)
+app.include_router(risk_routes.router)
+app.include_router(guidance_routes.router)
 
 
 @app.get("/")
