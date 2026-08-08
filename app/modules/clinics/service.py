@@ -36,8 +36,8 @@ def _to_clinic(row: PublicClinic) -> Clinic:
         type=row.facility_type or "",
         state=row.state or "",
         district=row.district or "",
-        address=row.address or "",
-        phone=row.phone or "",
+        address=row.address or "N/A",
+        phone=row.phone or "N/A",
         lat=float(row.latitude or 0),
         lng=float(row.longitude or 0),
     )
